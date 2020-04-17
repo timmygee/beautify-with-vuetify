@@ -39,24 +39,28 @@
 
 <script>
 export default {
-	name: 'App',
-	data() {
-		return {
-			links: [
-				{
-					label: 'Home',
-					url: '/'
-				},
-				{
-					label: 'Login',
-					url: '/login'
-				},
-				{
-					label: 'Dashboard',
-					url: '/dashboard'
-				}
-			]
-		}
-	}
-}
+  name: "App",
+  data() {
+    return {
+      links: [
+        {
+          label: "Home",
+          url: "/"
+        },
+        {
+          label: "Login",
+          url: "/login"
+        },
+        {
+          label: "Signup",
+          url: "/signup"
+        },
+        {
+          label: "Dashboard",
+          url: "/dashboard"
+        }
+      ]
+    };
+  }
+};
 </script>
