@@ -9,22 +9,23 @@
     </v-row>
 
     <v-row>
-      <v-col
-        v-for="statistic in statistics"
-        :key="`${statistic.title}`"
-      >
-        <StatisticCard
-          :statistic="statistic"
-        />
+      <v-col v-for="statistic in statistics" :key="`${statistic.title}`">
+        <StatisticCard :statistic="statistic" />
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="8">
+    <v-row id="below-the-fold" v-intersect="showMoreContent">
+      <v-col cols="12" md="8">
         <EmployeesTable :employees="employees" @select-employee="setEmployee" />
       </v-col>
-      <v-col cols="4">
+      <v-col cols="12" md="4">
         <EventTimeline :timeline="timeline" />
+      </v-col>
+    </v-row>
+
+    <v-row v-if="loadNewContent" id="more-content">
+      <v-col>
+        <v-skeleton-loader ref="skeleton" type="table" class="mx-auto" />
       </v-col>
     </v-row>
 
@@ -39,35 +40,36 @@
 </template>
 
 <script>
-import EmployeesTable from "../components/EmployeesTable";
-import EventTimeline from "../components/EventTimeline";
-import SalesGraph from "../components/SalesGraph";
-import StatisticCard from "../components/StatisticCard";
+import EmployeesTable from '../components/EmployeesTable';
+import EventTimeline from '../components/EventTimeline';
+import SalesGraph from '../components/SalesGraph';
+import StatisticCard from '../components/StatisticCard';
 
-import employeesData from "../data/employees.json";
-import timelineData from "../data/timeline.json";
-import salesData from "../data/sales.json";
-import statisticsData from "../data/statistics.json";
+import employeesData from '../data/employees.json';
+import timelineData from '../data/timeline.json';
+import salesData from '../data/sales.json';
+import statisticsData from '../data/statistics.json';
 
 export default {
-  name: "DashboardPage",
+  name: 'DashboardPage',
   components: {
     EmployeesTable,
     EventTimeline,
     SalesGraph,
-    StatisticCard
+    StatisticCard,
   },
   data() {
     return {
+      loadNewContent: false,
       employees: employeesData,
       sales: salesData,
       selectedEmployee: {
-        name: "",
-        title: ""
+        name: '',
+        title: '',
       },
       snackbar: false,
       statistics: statisticsData,
-      timeline: timelineData
+      timeline: timelineData,
     };
   },
   methods: {
@@ -75,7 +77,10 @@ export default {
       this.snackbar = true;
       this.selectedEmployee.name = event.name;
       this.selectedEmployee.title = event.title;
-    }
-  }
+    },
+    showMoreContent(entries) {
+      this.loadNewContent = entries[0].isIntersecting;
+    },
+  },
 };
 </script>
